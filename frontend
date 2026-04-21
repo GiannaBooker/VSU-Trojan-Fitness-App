@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VSU Trojan Fitness - Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="login-card">
+      <h1>VSU Trojan Fitness</h1>  
+      <p class="subtitle">HAIL STATE!</p>
+
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+
+      <button onclick="login()">Sign In</button>
+
+      <p id="message"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+function login() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  const message = document.getElementById("message");
+
+  if (username === "student" && password === "1234") {
+    message.style.color = "green";
+    message.textContent = "Login successful!";
+  } else {
+    message.style.color = "red";
+    message.textContent = "Invalid username or password.";
+  }
+}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VSU Trojan Fitness - Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="login-card">
+      <h1>VSU Trojan Fitness</h1>  
+      <p class="subtitle">HAIL STATE!</p>
+
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+
+      <button onclick="login()">Sign In</button>
+
+      <p id="message"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+:root {
+  --orange: #ff6b00;
+  --blue: #0a1f44;
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(135deg, var(--blue), var(--orange));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.login-card {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 16px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.login-card h1 {
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: gray;
+  margin-bottom: 20px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+}
+
+.login-card input:focus {
+  border-color: var(--orange);
+  outline: none;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 8px;
+  background: var(--orange);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-card button:hover {
+  background: #e55d00;
+}
+
+#message {
+  margin-top: 15px;
+  font-size: 14px;
+}
