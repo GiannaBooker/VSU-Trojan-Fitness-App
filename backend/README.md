@@ -4,6 +4,7 @@ Minimal Node.js backend that provides:
 
 - Email/password login + logout (JWT)
 - Check-in / check-out endpoints with timestamps
+- VSU-only registration/login emails (`@vsu.edu` domains only)
 
 ## Setup
 
@@ -39,7 +40,7 @@ All protected routes require:
 
 Body:
 ```json
-{ "email": "user@example.com", "password": "password123" }
+{ "email": "user@students.vsu.edu", "password": "password123" }
 ```
 
 ### Login
@@ -55,7 +56,7 @@ Example:
 ```bash
 curl -sS -X POST http://localhost:3000/api/auth/login \
   -H 'content-type: application/json' \
-  -d '{"email":"user@example.com","password":"password123"}'
+  -d '{"email":"user@students.vsu.edu","password":"password123"}'
 ```
 
 ### Logout

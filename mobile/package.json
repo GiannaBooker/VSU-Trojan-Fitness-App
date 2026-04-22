@@ -1,0 +1,26 @@
+{
+  "name": "vsu-trojan-fitness-mobile",
+  "private": true,
+  "main": "expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~6.1.2",
+    "expo": "~54.0.13",
+    "expo-constants": "~18.0.13",
+    "expo-linear-gradient": "~15.0.8",
+    "expo-notifications": "~0.32.16",
+    "expo-status-bar": "~3.0.8",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native": "^0.81.5",
+    "react-native-web": "^0.21.0"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "~54.0.6"
+  }
+}
