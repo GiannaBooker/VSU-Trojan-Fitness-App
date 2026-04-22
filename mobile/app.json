@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "VSU Trojan Fitness",
+    "slug": "vsu-trojan-fitness",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#f5f8ff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#f5f8ff"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

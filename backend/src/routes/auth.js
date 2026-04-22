@@ -5,7 +5,19 @@ import { hashPassword, verifyPassword } from "../passwords.js";
 import { signJwt } from "../jwt.js";
 
 function isValidEmail(email) {
-  return typeof email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (typeof email !== "string") return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isVsuEmail(email) {
+  if (!isValidEmail(email)) return false;
+  return /^[^\s@]+@(?:[a-z0-9-]+\.)*vsu\.edu$/i.test(email.trim());
+}
+
+function createError(code) {
+  const error = new Error(code);
+  error.code = code;
+  return error;
 }
 
 export function createAuthRouter({ jwtSecret }) {
@@ -13,8 +25,10 @@ export function createAuthRouter({ jwtSecret }) {
 
   router.post("/register", async (req, res) => {
     const { email, password } = req.body ?? {};
-    if (!isValidEmail(email)) {
-      return res.status(400).json({ error: "Invalid email" });
+    if (!isVsuEmail(email)) {
+      return res.status(400).json({
+        error: "Use a valid VSU email (example: example@students.vsu.edu)",
+      });
     }
     if (typeof password !== "string" || password.length < 8) {
       return res.status(400).json({ error: "Password must be at least 8 characters" });
@@ -22,21 +36,20 @@ export function createAuthRouter({ jwtSecret }) {
 
     const emailNormalized = email.trim().toLowerCase();
     const { salt, hash } = await hashPassword(password);
+    const createdAt = new Date().toISOString();
 
     try {
       const user = await mutateDb((db) => {
-        const exists = db.users.some((u) => u.email === emailNormalized);
-        if (exists) {
-          const err = new Error("EMAIL_EXISTS");
-          err.code = "EMAIL_EXISTS";
-          throw err;
+        const existingUser = db.users.find((u) => u.email === emailNormalized);
+        if (existingUser) {
+          throw createError("EMAIL_EXISTS");
         }
 
         const newUser = {
           id: crypto.randomUUID(),
           email: emailNormalized,
           password: { salt, hash },
-          createdAt: new Date().toISOString(),
+          createdAt,
         };
         db.users.push(newUser);
         return { id: newUser.id, email: newUser.email };
@@ -47,6 +60,7 @@ export function createAuthRouter({ jwtSecret }) {
       if (err?.code === "EMAIL_EXISTS") {
         return res.status(409).json({ error: "Email already registered" });
       }
+      console.error("Registration failed:", err);
       return res.status(500).json({ error: "Registration failed" });
     }
   });
@@ -55,8 +69,10 @@ export function createAuthRouter({ jwtSecret }) {
     const { email, password } = req.body ?? {};
     const emailNormalized = typeof email === "string" ? email.trim().toLowerCase() : "";
 
-    if (!isValidEmail(emailNormalized) || typeof password !== "string") {
-      return res.status(400).json({ error: "Invalid credentials" });
+    if (!isVsuEmail(emailNormalized) || typeof password !== "string") {
+      return res.status(400).json({
+        error: "Invalid credentials. Use your VSU email address.",
+      });
     }
 
     const { user, ok } = await mutateDb(async (db) => {
@@ -83,4 +99,3 @@ export function createAuthRouter({ jwtSecret }) {
 
   return router;
 }
-
