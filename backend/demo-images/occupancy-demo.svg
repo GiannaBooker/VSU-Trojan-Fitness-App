@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="330" viewBox="0 0 1200 330">
+  <rect x="0" y="0" width="1200" height="330" fill="#050814"/>
+  <text x="40" y="56" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto" font-size="26" fill="#f8fafc">Occupancy API (Demo Output)</text>
+  <text x="40" y="78" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto" font-size="13" fill="#94a3b8">Generated locally from backend services using a demo DB (no HTTP server).</text>
+  
+  <g>
+    <rect x="40" y="100" width="1120" height="184" rx="14" fill="#0b1220" stroke="#24304a"/>
+    <text x="58" y="140" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto" font-size="18" fill="#e5e7eb">GET /api/occupancy</text>
+    <text x="58" y="162" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto" font-size="13" fill="#94a3b8">Computed from sessions where checkOutAt is null</text>
+    <rect x="58" y="158" width="1084" height="108" rx="10" fill="#0a0f1a" stroke="#1f2937"/>
+    <text x="58" y="176" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace" font-size="13" fill="#d1d5db">
+      <tspan x="58" dy="0">{</tspan><tspan x="58" dy="18">  &quot;count&quot;: 2,</tspan><tspan x="58" dy="18">  &quot;maxCapacity&quot;: 50,</tspan><tspan x="58" dy="18">  &quot;asOf&quot;: &quot;2026-04-25T21:32:53.379Z&quot;</tspan><tspan x="58" dy="18">}</tspan>
+    </text>
+  </g>
+</svg>

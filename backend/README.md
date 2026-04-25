@@ -34,6 +34,10 @@ All protected routes require:
 
 `Authorization: Bearer <token>`
 
+Admin-only routes also require:
+
+`x-admin-key: <ADMIN_KEY>`
+
 ### Register
 
 `POST /api/auth/register`
@@ -85,3 +89,49 @@ Returns:
 ```json
 { "status": "checked_in", "checkInAt": "2026-04-21T18:00:00.000Z" }
 ```
+
+### Occupancy
+
+`GET /api/occupancy` (auth required)
+
+Returns:
+```json
+{ "count": 12, "maxCapacity": 50, "asOf": "2026-04-25T21:12:00.000Z" }
+```
+
+Set capacity (admin required):
+
+`POST /api/occupancy/settings`
+
+Body:
+```json
+{ "maxCapacity": 50 }
+```
+
+### Equipment availability
+
+List equipment (auth required):
+
+`GET /api/equipment`
+
+Create equipment (admin required):
+
+`POST /api/equipment`
+
+Body:
+```json
+{ "name": "Treadmill #1", "area": "Cardio" }
+```
+
+Update equipment status (auth required):
+
+`POST /api/equipment/:id/status`
+
+Body:
+```json
+{ "status": "in_use", "note": "Peak hours" }
+```
+
+History (auth required):
+
+`GET /api/equipment/:id/history?limit=50`

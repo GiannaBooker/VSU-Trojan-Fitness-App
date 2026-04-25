@@ -32,6 +32,7 @@ export function createCheckinRouter({ requireAuth }) {
           userId,
           checkInAt: now,
           checkOutAt: null,
+          checkOutReason: null,
         };
         db.sessions.push(newSession);
         return newSession;
@@ -63,6 +64,7 @@ export function createCheckinRouter({ requireAuth }) {
         }
 
         open.checkOutAt = now;
+        open.checkOutReason = "user";
         return open;
       });
 
@@ -90,4 +92,3 @@ export function createCheckinRouter({ requireAuth }) {
 
   return router;
 }
-

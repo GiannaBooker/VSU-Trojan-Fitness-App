@@ -1,0 +1,84 @@
+{
+  "users": [],
+  "sessions": [
+    {
+      "id": "3c511557-067f-4133-a44d-be24db1fefdf",
+      "userId": "8db11495-fca2-4740-a3a7-91e6afe9eb1c",
+      "checkInAt": "2026-04-25T21:08:53.387Z",
+      "checkOutAt": null,
+      "checkOutReason": null
+    },
+    {
+      "id": "4b594a03-b5ee-46e3-a118-1350688f5ea4",
+      "userId": "eec831f3-5a28-4e5b-a600-86faf496b273",
+      "checkInAt": "2026-04-25T20:26:53.388Z",
+      "checkOutAt": null,
+      "checkOutReason": null
+    },
+    {
+      "id": "0c7e93c9-1b70-4bc1-b09c-fd795dcceb44",
+      "userId": "63bb3a03-2652-45d6-9722-a953c1f91fcd",
+      "checkInAt": "2026-04-25T19:32:53.388Z",
+      "checkOutAt": "2026-04-25T21:32:53.379Z",
+      "checkOutReason": "user"
+    }
+  ],
+  "revokedTokens": [],
+  "occupancy": {
+    "maxCapacity": 50
+  },
+  "equipment": [
+    {
+      "id": "a987933c-c4b7-403b-acc9-01314870f43e",
+      "name": "Treadmill #1",
+      "area": "Cardio",
+      "createdAt": "2026-04-25T21:32:53.379Z"
+    },
+    {
+      "id": "93fa3d33-936b-4bc2-967c-1879e001d370",
+      "name": "Squat Rack A",
+      "area": "Strength",
+      "createdAt": "2026-04-25T21:32:53.379Z"
+    }
+  ],
+  "equipmentStatuses": {
+    "a987933c-c4b7-403b-acc9-01314870f43e": {
+      "status": "in_use",
+      "updatedAt": "2026-04-25T21:32:53.379Z",
+      "updatedByUserId": "demo-user",
+      "note": "Busy hour"
+    },
+    "93fa3d33-936b-4bc2-967c-1879e001d370": {
+      "status": "available",
+      "updatedAt": "2026-04-25T21:32:53.379Z",
+      "updatedByUserId": null,
+      "note": null
+    }
+  },
+  "equipmentEvents": [
+    {
+      "id": "d89edf06-43a7-47e8-9331-86a07b418d6a",
+      "equipmentId": "a987933c-c4b7-403b-acc9-01314870f43e",
+      "status": "available",
+      "updatedAt": "2026-04-25T21:32:53.379Z",
+      "updatedByUserId": null,
+      "note": null
+    },
+    {
+      "id": "3dcb8ee7-1e62-4d64-9f03-0ed0fbffd20b",
+      "equipmentId": "93fa3d33-936b-4bc2-967c-1879e001d370",
+      "status": "available",
+      "updatedAt": "2026-04-25T21:32:53.379Z",
+      "updatedByUserId": null,
+      "note": null
+    },
+    {
+      "id": "ba85d7bb-6b68-4748-a381-29a6bf20dc3d",
+      "equipmentId": "a987933c-c4b7-403b-acc9-01314870f43e",
+      "status": "in_use",
+      "updatedAt": "2026-04-25T21:32:53.379Z",
+      "updatedByUserId": "demo-user",
+      "note": "Busy hour"
+    }
+  ]
+}

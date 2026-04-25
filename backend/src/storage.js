@@ -7,7 +7,42 @@ function defaultDb() {
     users: [],
     sessions: [],
     revokedTokens: [],
+    occupancy: { maxCapacity: null },
+    equipment: [],
+    equipmentStatuses: {},
+    equipmentEvents: [],
   };
+}
+
+function normalizeDb(db) {
+  const normalized = db && typeof db === "object" ? db : {};
+
+  if (!Array.isArray(normalized.users)) normalized.users = [];
+  if (!Array.isArray(normalized.sessions)) normalized.sessions = [];
+  if (!Array.isArray(normalized.revokedTokens)) normalized.revokedTokens = [];
+
+  if (
+    !normalized.occupancy ||
+    typeof normalized.occupancy !== "object" ||
+    Array.isArray(normalized.occupancy)
+  ) {
+    normalized.occupancy = { maxCapacity: null };
+  }
+  if (typeof normalized.occupancy.maxCapacity !== "number") {
+    normalized.occupancy.maxCapacity = null;
+  }
+
+  if (!Array.isArray(normalized.equipment)) normalized.equipment = [];
+  if (
+    !normalized.equipmentStatuses ||
+    typeof normalized.equipmentStatuses !== "object" ||
+    Array.isArray(normalized.equipmentStatuses)
+  ) {
+    normalized.equipmentStatuses = {};
+  }
+  if (!Array.isArray(normalized.equipmentEvents)) normalized.equipmentEvents = [];
+
+  return normalized;
 }
 
 function resolveDbPath() {
@@ -34,7 +69,7 @@ function enqueue(task) {
 async function readDbFile(dbPath) {
   await ensureDbFile(dbPath);
   const raw = await fs.readFile(dbPath, "utf8");
-  return JSON.parse(raw);
+  return normalizeDb(JSON.parse(raw));
 }
 
 async function writeDbFile(dbPath, db) {
@@ -48,11 +83,31 @@ function cleanupExpiredRevocations(db) {
   );
 }
 
+function cleanupStaleOpenSessions(db) {
+  const maxHoursRaw = Number(process.env.SESSION_MAX_HOURS || 8);
+  const maxHours = Number.isFinite(maxHoursRaw) && maxHoursRaw > 0 ? maxHoursRaw : 8;
+  const maxMs = maxHours * 60 * 60 * 1000;
+  const now = Date.now();
+  const nowIso = new Date(now).toISOString();
+
+  for (const session of db.sessions) {
+    if (!session || typeof session !== "object") continue;
+    if (session.checkOutAt) continue;
+    const checkInMs = Date.parse(session.checkInAt);
+    if (!Number.isFinite(checkInMs)) continue;
+    if (now - checkInMs > maxMs) {
+      session.checkOutAt = nowIso;
+      session.checkOutReason = "auto_timeout";
+    }
+  }
+}
+
 export async function accessDb(reader) {
   const dbPath = resolveDbPath();
   return enqueue(async () => {
     const db = await readDbFile(dbPath);
     cleanupExpiredRevocations(db);
+    cleanupStaleOpenSessions(db);
     await writeDbFile(dbPath, db);
     return reader(db);
   });
@@ -63,9 +118,9 @@ export async function mutateDb(mutator) {
   return enqueue(async () => {
     const db = await readDbFile(dbPath);
     cleanupExpiredRevocations(db);
+    cleanupStaleOpenSessions(db);
     const result = await mutator(db);
     await writeDbFile(dbPath, db);
     return result;
   });
 }
-
