@@ -5,7 +5,6 @@ import {
   Platform,
   Pressable,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -27,12 +26,22 @@ import {
   registerUser,
 } from "./src/api";
 import { sendWelcomeNotification } from "./src/nativeNotifications";
-import { ActionButton, Field, Notice, Panel, Pill } from "./src/ui";
+import { ActionButton, Field, Notice } from "./src/ui";
+import Dashboard from "./src/screens/Dashboard";
+import { ThemeProvider } from "./src/theme";
 
 const TROJAN_LOGO = require("./assets/vsu-trojans-logo.png");
 const TROJAN_WORDMARK = require("./assets/vsu-trojans-wordmark.png");
 
 export default function App() {
+  return (
+    <ThemeProvider>
+      <AppShell />
+    </ThemeProvider>
+  );
+}
+
+function AppShell() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authMode, setAuthMode] = useState("signin");
@@ -101,33 +110,7 @@ export default function App() {
   }
 
   if (session) {
-    return (
-      <SafeAreaView style={styles.safeArea}>
-        <StatusBar style="light" />
-        <LinearGradient colors={gradients.background} style={styles.screen}>
-          <ScrollView contentContainerStyle={styles.loggedInScroll}>
-            <Panel style={styles.dashboardCard}>
-              <Image resizeMode="contain" source={TROJAN_WORDMARK} style={styles.dashboardWordmark} />
-              <Image resizeMode="contain" source={TROJAN_LOGO} style={styles.dashboardLogo} />
-              <Pill
-                style={styles.dashboardPill}
-                textStyle={styles.dashboardPillText}
-              >
-                Authenticated
-              </Pill>
-              <Text style={styles.dashboardTitle}>Welcome back to Trojan Fitness</Text>
-              <Text style={styles.dashboardSubtitle}>
-                You're signed in with your VSU email and ready to get moving.
-              </Text>
-              <Notice tone="info" title="Signed in">
-                {session.user.email}
-              </Notice>
-              <ActionButton label="Log out" onPress={logOut} style={styles.dashboardButton} variant="secondary" />
-            </Panel>
-          </ScrollView>
-        </LinearGradient>
-      </SafeAreaView>
-    );
+    return <Dashboard session={session} onLogout={logOut} />;
   }
 
   return (
@@ -668,50 +651,5 @@ const styles = StyleSheet.create({
   },
   footerLinkTight: {
     fontSize: 14,
-  },
-  loggedInScroll: {
-    flexGrow: 1,
-    justifyContent: "center",
-    padding: spacing.xl,
-  },
-  dashboardCard: {
-    alignItems: "center",
-    alignSelf: "center",
-    gap: spacing.lg,
-    maxWidth: 560,
-    width: "100%",
-  },
-  dashboardWordmark: {
-    height: 28,
-    width: 220,
-  },
-  dashboardLogo: {
-    aspectRatio: 1280 / 1147,
-    height: 220,
-    width: "100%",
-  },
-  dashboardPill: {
-    backgroundColor: colors.royal,
-    borderColor: colors.royal,
-  },
-  dashboardPillText: {
-    color: colors.white,
-  },
-  dashboardTitle: {
-    color: colors.ink,
-    fontFamily: typography.fontFamilyBrand,
-    fontSize: typography.heading,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  dashboardSubtitle: {
-    color: colors.inkSoft,
-    fontFamily: typography.fontFamilySans,
-    fontSize: typography.body,
-    lineHeight: 24,
-    textAlign: "center",
-  },
-  dashboardButton: {
-    alignSelf: "stretch",
   },
 });
