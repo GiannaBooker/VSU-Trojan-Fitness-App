@@ -18,13 +18,14 @@ function resolveApiBaseUrl() {
 
 const API_BASE_URL = resolveApiBaseUrl();
 
-async function post(path, body) {
+async function request(path, { method = "GET", body, token } = {}) {
+  const headers = { "content-type": "application/json" };
+  if (token) headers.authorization = `Bearer ${token}`;
+
   const response = await fetch(`${API_BASE_URL}${path}`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(body),
+    method,
+    headers,
+    body: method === "GET" ? undefined : JSON.stringify(body ?? {}),
   });
 
   let payload = {};
@@ -35,16 +36,76 @@ async function post(path, body) {
   }
 
   if (!response.ok) {
-    throw new Error(payload.error || "Request failed");
+    const error = new Error(payload.error || "Request failed");
+    error.status = response.status;
+    error.payload = payload;
+    throw error;
   }
 
   return payload;
 }
 
 export async function registerUser({ email, password }) {
-  return post("/gateway/auth/register", { email, password });
+  return request("/gateway/auth/register", { method: "POST", body: { email, password } });
 }
 
 export async function loginUser({ email, password }) {
-  return post("/gateway/auth/login", { email, password });
+  return request("/gateway/auth/login", { method: "POST", body: { email, password } });
+}
+
+export async function logoutUser({ token }) {
+  return request("/gateway/auth/logout", { method: "POST", token });
+}
+
+export async function fetchGym({ token }) {
+  return request("/gateway/gym", { token });
+}
+
+export async function fetchGymPopulation({ token }) {
+  return request("/gateway/gym/population", { token });
+}
+
+export async function fetchStatus({ token }) {
+  return request("/gateway/status", { token });
+}
+
+export async function checkInAtGym({ token, latitude, longitude, accuracy, source }) {
+  return request("/gateway/gym/checkin", {
+    method: "POST",
+    token,
+    body: { latitude, longitude, accuracy, source },
+  });
+}
+
+export async function checkOutOfGym({ token }) {
+  return request("/gateway/gym/checkout", { method: "POST", token });
+}
+
+export async function simulateGymPopulation({ token, scenario, count }) {
+  const body = scenario != null ? { scenario } : { count };
+  return request("/gateway/gym/population/simulate", {
+    method: "POST",
+    token,
+    body,
+  });
+}
+
+export async function fetchMyStats({ token }) {
+  return request("/gateway/me/stats", { token });
+}
+
+export async function updateWeeklyGoal({ token, weeklyGoal }) {
+  return request("/gateway/me/goal", {
+    method: "POST",
+    token,
+    body: { weeklyGoal },
+  });
+}
+
+export async function fetchWorkouts({ token }) {
+  return request("/gateway/workouts", { token });
+}
+
+export async function fetchEvents({ token }) {
+  return request("/gateway/events", { token });
 }

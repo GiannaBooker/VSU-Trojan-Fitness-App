@@ -73,6 +73,42 @@ app.get("/gateway/status", async (req, res) => {
   return proxyToBackend(req, res, "/api/status");
 });
 
+app.get("/gateway/gym", async (req, res) => {
+  return proxyToBackend(req, res, "/api/gym");
+});
+
+app.get("/gateway/gym/population", async (req, res) => {
+  return proxyToBackend(req, res, "/api/gym/population");
+});
+
+app.post("/gateway/gym/checkin", async (req, res) => {
+  return proxyToBackend(req, res, "/api/gym/checkin");
+});
+
+app.post("/gateway/gym/checkout", async (req, res) => {
+  return proxyToBackend(req, res, "/api/gym/checkout");
+});
+
+app.post("/gateway/gym/population/simulate", async (req, res) => {
+  return proxyToBackend(req, res, "/api/gym/population/simulate");
+});
+
+app.get("/gateway/me/stats", async (req, res) => {
+  return proxyToBackend(req, res, "/api/me/stats");
+});
+
+app.post("/gateway/me/goal", async (req, res) => {
+  return proxyToBackend(req, res, "/api/me/goal");
+});
+
+app.get("/gateway/workouts", async (req, res) => {
+  return proxyToBackend(req, res, "/api/workouts");
+});
+
+app.get("/gateway/events", async (req, res) => {
+  return proxyToBackend(req, res, "/api/events");
+});
+
 app.use((err, _req, res, _next) => {
   console.error(err);
   return res.status(500).json({ error: "Internal gateway server error" });

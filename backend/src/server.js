@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import { createAuthRouter } from "./routes/auth.js";
 import { createCheckinRouter } from "./routes/checkin.js";
+import { createFitnessRouter } from "./routes/fitness.js";
 import { createAuthMiddleware } from "./middleware/auth.js";
 import { mutateDb } from "./storage.js";
 
@@ -40,6 +41,7 @@ app.post("/api/auth/logout", requireAuth, async (req, res) => {
 });
 
 app.use("/api", createCheckinRouter({ requireAuth }));
+app.use("/api", createFitnessRouter({ requireAuth }));
 
 app.use((err, _req, res, _next) => {
   console.error(err);
